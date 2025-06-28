@@ -1,0 +1,157 @@
+/* css/styleslogin.css */
+
+/* --- Importamos las fuentes --- */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700&family=Playfair+Display:wght@700&display=swap');
+
+/* --- Variables de Color (consistentes con el sitio) --- */
+:root {
+    --color-primary: #D94435;
+    --color-primary-dark: #B93426;
+    --color-text: #222222;
+    --font-display: 'Noto Sans JP', sans-serif;
+    --font-body: 'Lato', sans-serif;
+    --gradiente-primario: linear-gradient(135deg, #E57373 0%, #D94435 50%, #B71C1C 100%);
+}
+
+/* --- Estilo General de la Página --- */
+body.login-page {
+    font-family: var(--font-body);
+    /* El fondo de la página */
+    background-image: 
+        linear-gradient(rgba(148, 32, 32, 0.801), rgba(0, 0, 0, 0.74)),
+        url('/img/nosotros-bg.webp'); /* << REEMPLAZA ESTA IMAGEN */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+/* --- Contenedor Principal del Formulario --- */
+.login-container {
+    max-width: 450px;
+    width: 100%;
+    padding: 3rem;
+    /* Efecto "Glassmorphism" */
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    text-align: center;
+    animation: fadeIn 0.8s ease-out; /* Animación de entrada */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.login-container .logo {
+    height: 200px;
+    filter: brightness(0) invert(1);
+}
+
+.login-container h1 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.login-container .login-subtitle {
+    margin-bottom: 2rem;
+    opacity: 0.8;
+}
+
+/* --- Estilo de los Campos del Formulario --- */
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 4px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.form-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Efecto de foco inspirado en tu ejemplo */
+.form-input:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 0 3px rgba(217, 68, 53, 0.4);
+}
+
+/* --- Botón de Login --- */
+.btn-login {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    background: var(--gradiente-primario);
+    color: #fff;
+    box-shadow: 0 8px 25px rgba(217, 68, 53, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(217, 68, 53, 0.4);
+}
+
+/* --- Mensajes y Enlaces Adicionales --- */
+.login-message {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+}
+.login-message.error {
+    background-color: rgba(255, 82, 82, 0.8);
+    border: 1px solid rgba(255, 138, 138, 1);
+}
+/* AÑADE ESTA NUEVA REGLA */
+.login-message.success {
+    background-color: rgba(40, 167, 69, 0.8);
+    border: 1px solid rgba(60, 187, 89, 1);
+    color: #fff;
+}
+
+.login-footer {
+    margin-top: 2rem;
+    opacity: 0.9;
+}
+
+.login-footer a {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.login-footer a:hover {
+    opacity: 0.8;
+}

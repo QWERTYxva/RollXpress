@@ -1,0 +1,759 @@
+/* --- Importación de Fuentes --- */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700&family=Playfair+Display:wght@700&display=swap');
+
+/* --- Paleta de Colores y Variables Globales --- */
+:root {
+    --color-primary: #D94435;
+    --color-primary-dark: #B71C1C;
+    --color-text-on-dark: #FFFFFF;
+    --color-text-subtle-on-dark: #E0E0E0;
+    --font-display: 'Noto Sans JP', sans-serif;
+    --font-body: 'Lato', sans-serif;
+    --gradiente-primario: linear-gradient(135deg, #E57373 0%, #D94435 50%, #B71C1C 100%);
+    --gradiente-hover: linear-gradient(135deg, #EF9A9A 0%, #E53935 50%, #C62828 100%);
+    --sombra-vibrante: 0 10px 30px rgba(217, 68, 53, 0.3);
+    --max-width: 1200px;
+    --border-radius: 12px;
+}
+
+/* --- Reset Básico y Estilos del Body --- */
+*, *::before, *::after { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+html { 
+    scroll-behavior: smooth; 
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--color-text-on-dark);
+    line-height: 1.7;
+    background-color: #1a1a1a;
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+        url('/img/menu-bg.webp');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    padding-top: 70px;
+}
+ul {
+    list-style: none;
+}
+
+.hero-title {
+    /* 1. Reseteamos los estilos de la "barra" anterior */
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    display: block; /* Lo devolvemos a su estado de bloque normal */
+
+    /* 2. Re-aplicamos el fondo de gradiente que te gustó */
+    background: linear-gradient(45deg, #FFDAB9, #FFFFFF, #FF6347, #FFDAB9);
+    background-size: 200% auto; /* Hacemos el gradiente más grande para animarlo */
+    
+    /* 3. La magia para que el texto sea el que tenga el gradiente */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* 4. Una animación sutil para que el brillo se mueva */
+    animation: shine 8s linear infinite;
+
+    /* 5. Sombra de texto para máxima legibilidad sobre la imagen */
+    text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* Definimos la animación del brillo */
+@keyframes shine {
+    to {
+        background-position: 200% center;
+    }
+}
+
+/* Opcional: un pequeño efecto al pasar el mouse */
+.hero-title:hover {
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
+}
+.hero-content {
+    padding: 5%;
+    display: flex;
+    flex-direction: column; /* Apila los elementos verticalmente */
+    align-items: center;   /* <<< ESTA ES LA LÍNEA MÁGICA que centra todo horizontalmente */
+    justify-content: center;
+}
+
+/* --- Botón con Animación de Pulso --- */
+
+/* Definimos la animación */
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 15px 0px rgba(217, 68, 53, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 30px 10px rgba(217, 68, 53, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 15px 0px rgba(217, 68, 53, 0.5);
+    }
+}
+
+/* Aplicamos la animación al botón del Hero */
+.hero-content .btn-primary {
+    animation: pulse-glow 3s infinite ease-in-out;
+    border: 2px solid rgba(255, 255, 255, 0.7); /* Un borde sutil para más definición */
+}
+
+/* Mejoramos el efecto hover del botón */
+.hero-content .btn-primary:hover {
+    animation-play-state: paused; /* Pausamos la animación al pasar el mouse */
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 15px 40px rgba(217, 68, 53, 0.5);
+}
+
+/* --- Contenedor y Estructura Principal --- */
+.container { 
+    width: 90%; 
+    max-width: var(--max-width); 
+    margin-inline: auto; 
+}
+
+.section { 
+    padding-block: 4rem; 
+}
+
+/* Panel de "Cristal" para Secciones */
+.section-panel {
+    background: rgba(15, 15, 15, 0.6);
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 2rem;
+}
+
+/* --- Componentes Vibrantes --- */
+.section-header { text-align: center; margin-bottom: 3rem; }
+.section-title { 
+    font-family: var(--font-display); 
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+.section-subtitle { font-size: 1.1rem; color: var(--color-text-subtle-on-dark); }
+
+.btn {
+    display: inline-block; padding: 0.8rem 2rem; border-radius: 50px;
+    font-weight: 700; text-align: center; cursor: pointer;
+    transition: all 0.3s ease; border: none; text-decoration: none;
+}
+.btn-primary {
+    background: var(--gradiente-primario); color: white;
+    box-shadow: var(--sombra-vibrante);
+}
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(217, 68, 53, 0.4);
+    color: white;
+}
+.btn-lg { padding: 1rem 2.5rem; font-size: 1.1rem; }
+
+/* Tarjetas de Menú */
+.menu-grid { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+.menu-item {
+    background: rgba(40, 40, 40, 0.7);
+    border-radius: var(--border-radius);
+    overflow: hidden; text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.menu-item:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+.menu-item-image { height: 200px; width: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.menu-item:hover .menu-item-image { transform: scale(1.1) rotate(-2deg); }
+.menu-item-content { padding: 1.5rem; }
+.menu-item-title { font-size: 1.25rem; color: #fff; font-family: var(--font-display); }
+.menu-item-description { color: var(--color-text-subtle-on-dark); font-size: 0.9rem; }
+.menu-item-footer { padding: 0 1.5rem 1.5rem; }
+.menu-item-price { font-weight: bold; font-size: 1.2rem; }
+
+/* ====================================================== */
+/* NUEVOS ESTILOS PARA LA SECCIÓN "3 PASOS"          */
+/* ====================================================== */
+
+.steps-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Una columna en móvil por defecto */
+    gap: 2rem;
+    align-items: start;
+}
+
+.step {
+    background: rgba(40, 40, 40, 0.7);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease;
+}
+
+.step:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    border-color: var(--color-primary);
+}
+
+.step-number {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    background: var(--gradiente-primario);
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: var(--font-display);
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--sombra-vibrante);
+}
+
+.step-title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.step-text {
+    color: var(--color-text-subtle-on-dark);
+}
+
+/* El conector entre los pasos (solo visible en escritorio) */
+.step-connector {
+    display: none; /* Oculto en móvil */
+}
+
+
+/* --- Vista para Tablets y Escritorio --- */
+@media (min-width: 992px) {
+    .steps-container {
+        /* Creamos un grid de 5 columnas para los 3 pasos y los 2 conectores */
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        align-items: center;
+        gap: 0;
+    }
+
+    .step-connector {
+        display: block;
+        height: 2px;
+        background: repeating-linear-gradient(
+            90deg,
+            var(--color-primary),
+            var(--color-primary) 10px,
+            transparent 10px,
+            transparent 20px
+        );
+        width: 100%;
+    }
+}
+
+/* --- Animaciones --- */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-on-scroll { 
+    opacity: 0; 
+    transition: all 0.6s ease-out; 
+}
+.is-visible { 
+    opacity: 1; 
+    transform: none; 
+    animation: fadeInUp 0.8s ease-out forwards; 
+}
+.animate-hero-content > * { opacity: 0; }
+.animate-hero-title { animation: fadeInUp 0.8s 0.3s ease-out forwards; }
+.animate-hero-text { animation: fadeInUp 0.8s 0.6s ease-out forwards; }
+.animate-hero-btn { animation: fadeInUp 0.8s 0.9s ease-out forwards; }
+
+/* --- Footer --- */
+.footer {
+    background: #111;
+    color: rgba(255,255,255,0.7);
+    padding: 4rem 0 2rem;
+    margin-top: 4rem;
+    border-top: 1px solid #444;
+}
+.footer-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; text-align: center; margin-bottom: 3rem; }
+.footer-logo { display: inline-block; height: 100px; filter: brightness(0) invert(1); margin-bottom: 1rem; }
+.footer-title { font-family: var(--font-body); font-weight: 700; color: white; margin-bottom: 1.5rem; margin-top: 1rem; }
+.footer-links a { color: rgba(255,255,255,0.7); display: block; margin-bottom: 0.5rem; text-decoration: none; transition: color 0.3s ease; }
+.footer-links a:hover { color: white; }
+.footer-contact-item { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; }
+.footer-contact-item i { color: var(--color-primary); }
+.footer-bottom { border-top: 1px solid #444; margin-top: 3rem; padding-top: 2rem; text-align: center; font-size: 0.9rem;}
+
+/* ==========================================================================
+   DISEÑO RESPONSIVE (MEDIA QUERIES)
+   ========================================================================== */
+@media (min-width: 768px) {
+    .container { width: 85%; }
+    .section-panel { padding: 3rem; }
+    
+    /* Layouts de Grids para tablets y escritorio */
+    .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .steps-grid { grid-template-columns: repeat(3, 1fr); }
+    .testimonial-grid { grid-template-columns: repeat(2, 1fr); }
+    
+    /* Footer para escritorio */
+    .footer-grid { grid-template-columns: repeat(3, 1fr); text-align: left; }
+    .footer-contact-item { justify-content: flex-start; }
+    .footer-title { margin-top: 0; }
+}
+
+@media (min-width: 1024px) {
+    /* Layouts para pantallas grandes */
+    .menu-grid { grid-template-columns: repeat(3, 1fr); }
+}
+/* --- Estilos para Galería de Instagram --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    aspect-ratio: 1 / 1; /* Para que sean cuadrados perfectos */
+}
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+.gallery-item-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+.gallery-item:hover .gallery-item-overlay {
+    opacity: 1;
+}
+.gallery-item-overlay i {
+    font-size: 2.5rem;
+    color: white;
+}
+@media (min-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.hero-content .btn {
+    visibility: visible !important; /* Forzamos la visibilidad */
+    opacity: 1 !important;         /* Forzamos que no sea transparente */
+    margin-top: 2rem;               /* Le damos un espacio superior para separarlo del texto */
+}
+/* ====================================================== */
+/* ESTILOS PARA FILTROS DEL MENÚ                       */
+/* ====================================================== */
+
+.menu-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: rgba(40, 40, 40, 0.7);
+    color: var(--color-text-subtle-on-dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.filter-btn.active {
+    background: var(--gradiente-primario);
+    color: white;
+    box-shadow: var(--sombra-vibrante);
+    border-color: transparent;
+}
+
+/* Estilos para ocultar/mostrar items con una transición suave */
+.menu-item {
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.menu-item.hidden {
+    transform: scale(0.9);
+    opacity: 0;
+    /* Usamos display: none después de la transición para que no ocupe espacio */
+    transition: transform 0.4s ease, opacity 0.4s ease, height 0s 0.4s, padding 0s 0.4s, margin 0s 0.4s;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+/* ====================================================== */
+/* ESTILOS PARA LA PÁGINA DE CONTACTO                  */
+/* ====================================================== */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.contact-info h3, .contact-form h3 {
+    font-size: 1.5rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+.contact-info p {
+    color: var(--color-text-subtle-on-dark);
+    margin-bottom: 2rem;
+}
+
+ul.contact-details {
+    list-style: none;
+    padding: 0;
+}
+.contact-details li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-subtle-on-dark);
+}
+.contact-details li i {
+    color: var(--color-primary);
+    font-size: 1.2rem;
+}
+.contact-details a {
+    color: var(--color-text-subtle-on-dark);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.contact-details a:hover {
+    color: var(--color-primary);
+}
+
+/* Estilos del Formulario */
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 10px rgba(217, 68, 53, 0.5);
+}
+textarea { resize: vertical; }
+
+.form-message {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    background: rgba(40, 167, 69, 0.8);
+    border: 1px solid rgba(60, 187, 89, 1);
+    color: #fff;
+}
+
+@media (min-width: 992px) {
+    .contact-grid {
+        grid-template-columns: 1fr 1.5fr;
+    }
+}
+
+/* ====================================================== */
+/* ESTILOS DEFINITIVOS PARA EL PANEL DEL CARRITO (ASIDE) */
+/* ====================================================== */
+
+/* Capa oscura de fondo */
+.cart-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.cart-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Panel lateral del carrito */
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 420px;
+    height: 100%;
+    background-color: #181818; /* Un negro un poco más suave */
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    z-index: 10001;
+    transform: translateX(100%);
+    transition: transform 0.4s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+.cart-sidebar.is-open {
+    transform: translateX(0);
+}
+
+/* Encabezado del carrito */
+.cart-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0; /* Evita que se encoja */
+}
+.cart-header h3 {
+    font-family: var(--font-display);
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* === ESTILOS PARA EL BOTÓN DE CIERRE (LA 'X') === */
+.cart-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-subtle-on-dark);
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.cart-close-btn:hover {
+    color: var(--color-primary);
+    transform: rotate(180deg);
+}
+
+/* Cuerpo del carrito con los productos */
+.cart-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+.cart-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.cart-item-info h4 { font-size: 1rem; margin-bottom: 0.25rem; font-weight: 500;}
+.cart-item-price { color: var(--color-text-subtle-on-dark); }
+.cart-item-quantity { display: flex; align-items: center; justify-content: flex-end; }
+.cart-item-quantity button { background: #333; color: white; border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; }
+.cart-item-quantity span { padding: 0 1rem; font-weight: bold; }
+.cart-item-remove { grid-column: 2 / 3; background: none; border: none; color: #888; cursor: pointer; }
+.cart-item-remove:hover { color: var(--color-primary); }
+
+/* Pie del carrito */
+.cart-footer {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #111;
+    flex-shrink: 0; /* Evita que se encoja */
+}
+.cart-total { display: flex; justify-content: space-between; font-size: 1.2rem; margin-bottom: 1rem; }
+.direccion-container label { display: block; font-size: 0.9rem; margin-bottom: 0.5rem; }
+.direccion-container input { width: 100%; padding: 10px; background: #333; border: 1px solid #555; border-radius: 8px; color: white; margin-bottom: 1rem; }
+body.no-scroll {
+    overflow: hidden;
+}
+/* ====================================================== */
+/* ESTILOS PARA LA PÁGINA DE PERFIL (perfil.php)       */
+/* ====================================================== */
+
+.profile-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Una columna en móvil */
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.profile-form h2 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--color-text-subtle-on-dark);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 10px rgba(217, 68, 53, 0.5);
+}
+
+.form-message {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    font-weight: 500;
+    border: 1px solid;
+}
+.form-message.success {
+    background: rgba(40, 167, 69, 0.3);
+    border-color: rgba(40, 167, 69, 0.8);
+}
+.form-message.error {
+    background: rgba(220, 53, 69, 0.3);
+    border-color: rgba(220, 53, 69, 0.8);
+}
+
+
+/* En pantallas más grandes, ponemos los formularios en dos columnas */
+@media (min-width: 992px) {
+    .profile-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+/* ====================================================== */
+/* ESTILOS PARA PÁGINA DE PEDIDOS (pedidos.php)        */
+/* ====================================================== */
+.pedidos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.pedido-card {
+    background: rgba(40, 40, 40, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+}
+
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pedido-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: white;
+}
+.pedido-header p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text-subtle-on-dark);
+}
+
+.pedido-status {
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: white;
+    text-transform: capitalize;
+}
+.pedido-status.recibido { background: #6c757d; }
+.pedido-status.en { background: #fd7e14; } /* Para 'En preparación' */
+.pedido-status.en.reparto { background: #0d6efd; } /* Para 'En reparto' */
+.pedido-status.listo { background: #198754; } /* Para 'Listo para retirar' */
+.pedido-status.completado { background: #198754; }
+.pedido-status.cancelado { background: #dc3545; }
+
+
+.pedido-body {
+    padding: 1rem 0;
+}
+
+.pedido-body h4 {
+    margin-bottom: 0.5rem;
+}
+
+.pedido-body ul {
+    list-style: none;
+    padding-left: 0;
+    color: var(--color-text-subtle-on-dark);
+}
+
+.pedido-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.pedido-footer strong {
+    font-size: 1.2rem;
+}
