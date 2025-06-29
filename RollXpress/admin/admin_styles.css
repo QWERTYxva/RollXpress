@@ -1,0 +1,157 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+body {
+    background-color: #2c3e50;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #34495e;
+    margin: 0;
+}
+a { text-decoration: none; }
+h1 { font-family: 'Anton', sans-serif; font-weight: normal; }
+
+
+/* =======================================================
+   ESTILOS PARA EL PANEL PRINCIPAL (Cuando ya iniciaste sesión)
+   ======================================================= */
+.main-admin-body {
+    display: flex;
+}
+
+/* --- Barra de Navegación Lateral Fija --- */
+.admin-nav {
+    width: 250px;
+    background: #34495e;
+    height: 100vh;
+    position: fixed;
+    display: flex; flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    color: #ecf0f1;
+}
+.admin-nav-header { padding: 1.5rem; text-align: center; border-bottom: 1px solid #4a627a; }
+.admin-nav-header img { height: 50px; filter: brightness(0) invert(1); }
+.admin-nav-header span { display: block; color: white; font-weight: bold; margin-top: 10px; font-size: 1.2rem; }
+.admin-nav-links { list-style: none; padding: 1rem 0; margin: 0; flex-grow: 1; }
+.admin-nav-links a { display: flex; align-items: center; padding: 1rem 1.5rem; color: #ecf0f1; transition: background 0.2s; }
+.admin-nav-links a:hover, .admin-nav-links a.active { background: #2c3e50; }
+.admin-nav-links i { margin-right: 12px; width: 20px; text-align: center; }
+.admin-nav-footer { padding: 1rem; border-top: 1px solid #4a627a; }
+.admin-nav-footer a { display: flex; align-items: center; color: #bdc3c7; padding: 0.5rem 0; transition: color 0.2s; }
+.admin-nav-footer a:hover { color: white; }
+
+/* --- Contenedor Principal del Contenido (a la derecha) --- */
+.admin-content {
+    margin-left: 250px;
+    padding: 2.5rem;
+    width: calc(100% - 250px);
+}
+
+/* --- Encabezado de Página (Título y Botón Añadir) --- */
+.admin-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #bdc3c7;
+}
+.admin-page-header h1 { margin: 0; font-size: 2.2rem; color: #ffffff; }
+.btn-add {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px; background-color: #27ae60;
+    color: white; border-radius: 5px; font-weight: bold;
+    transition: background-color 0.3s;
+}
+.btn-add:hover { background-color: #229954; }
+
+/* --- Estilos de la Tabla --- */
+.table-container {
+    background: #34495e;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+}
+table { width: 100%; border-collapse: collapse; color: #ffffff; }
+th, td { padding: 15px; border-bottom: 1px solid #ecf0f1; text-align: left; vertical-align: middle; }
+thead th { color: #ffffff; font-weight: 600; text-transform: uppercase; font-size: 0.8em; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background-color: #4a627a; }
+
+/* Indicadores de estado (Sí/No) */
+.status-badge { padding: 5px 12px; border-radius: 50px; font-size: 0.8em; font-weight: bold; }
+.status-badge.status-yes { background-color: #d4edda; color: #155724; }
+.status-badge.status-no { background-color: #e9ecef; color: #495057; }
+
+/* Botones de acción (Editar/Eliminar) */
+.actions-cell { white-space: nowrap; width: 1%; }
+.action-btn {
+    display: inline-flex; align-items: center; gap: 5px; padding: 8px 12px;
+    border-radius: 5px; color: white; font-weight: 500; font-size: 0.9em;
+    transition: opacity 0.2s;
+}
+.action-btn + .action-btn { margin-left: 10px; }
+.action-btn:hover { opacity: 0.85; }
+.action-btn.edit { background-color: #2980b9; }
+.action-btn.delete { background-color: #c0392b; }
+
+/* --- Estilos para Formularios (Crear/Editar Producto) --- */
+.body-form {
+    background-color: #2c3e50;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; padding: 2rem;
+}
+.form-container {
+    background: white; padding: 2.5rem; border-radius: 8px;
+    width: 100%; max-width: 700px; box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+}
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 8px; color: #34495e; font-weight: 600; }
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 12px; background: #f8f9f9;
+    border: 1px solid #bdc3c7; border-radius: 5px; color: #34495e; font-size: 1rem;
+}
+.form-group-checkbox { display: flex; align-items: center; gap: 10px; }
+.form-actions { margin-top: 2rem; display: flex; gap: 1rem; border-top: 1px solid #ecf0f1; padding-top: 1.5rem; }
+.btn-submit { background: #27ae60; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+.btn-cancel { background: #95a5a6; color: white; padding: 12px 20px; border-radius: 5px; }
+
+
+/* =======================================================
+   ESTILOS EXCLUSIVOS PARA LA PÁGINA DE LOGIN DEL ADMIN
+   ======================================================= */
+body.login-body {
+    background-color: #2c3e50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.login-box {
+    background: #34495e; padding: 2rem 3rem; border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    width: 100%; max-width: 400px; text-align: center;
+}
+.login-logo { height: 200px; filter: brightness(0) invert(1); margin-bottom: 1rem; }
+.login-box h2 { color: #ecf0f1; margin-bottom: 2rem; font-weight: 300; }
+.input-group { margin-bottom: 1.5rem; text-align: left; }
+.input-group label { display: block; color: #bdc3c7; margin-bottom: 5px; font-size: 0.9rem; }
+.input-group input { width: 100%; padding: 10px; background: #2c3e50; border: 1px solid #7f8c8d; border-radius: 5px; color: white; font-size: 1rem; }
+.login-box button {
+    width: 100%; padding: 12px; background: #1abc9c; border: none;
+    border-radius: 5px; color: white; font-size: 1.1rem; font-weight: bold;
+    cursor: pointer; transition: background 0.3s;
+}
+.login-box button:hover { background: #16a085; }
+.error-message { background: #e74c3c; color: white; padding: 10px; border-radius: 5px; margin-bottom: 1rem; }
+.status-badge.status-frequent {
+    background-color: #fff3cd; /* Fondo dorado/amarillo */
+    color: #664d03;
+    border: 1px solid #ffecb5;
+}
+.status-badge.status-regular {
+    background-color: #e9ecef; /* Fondo gris claro */
+    color: #495057;
+}
+table {
+    color: #ffffff;
+}

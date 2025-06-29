@@ -1,4 +1,5 @@
 <?php
+// admin/eliminar_producto.php
 require_once 'seguridad.php';
 require_once '../db.php';
 
@@ -7,5 +8,5 @@ if ($id) {
     $stmt = $pdo->prepare("DELETE FROM productos WHERE id = ?");
     $stmt->execute([$id]);
 }
-header('Location: index.php');
+header('Location: productos.php');
 ?>

@@ -58,14 +58,14 @@
       <p class="cart-empty-msg">Tu carrito está vacío.</p>
     </div>
     <div class="cart-footer">
-        <div class="cart-total">
-            <strong>Total:</strong>
-            <span id="cart-total-price">$0</span>
-        </div>
-        <a href="#" id="generate-order-btn" class="btn btn-primary btn-block" target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-whatsapp"></i> Generar Pedido
-        </a>
+    <div class="cart-total">
+        <strong>Total:</strong>
+        <span id="cart-total-price">$0</span>
     </div>
+    <button id="checkout-btn" class="btn btn-primary btn-block">
+        Finalizar Pedido
+    </button>
+</div>
 </aside>
 
 <div class="cart-overlay"></div>

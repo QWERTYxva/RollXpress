@@ -1,49 +1,32 @@
 <?php
-// registro.php
+// registro.php - Versión con campo de Dirección
+require_once 'db.php';
+$mensaje = '';
 
-// NUEVO: Iniciamos la sesión al principio de todo para poder usar $_SESSION.
-session_start();
-
-require 'db.php';
-$error = '';
-// Ya no necesitamos la variable $success aquí.
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = trim($_POST['nombre']);
     $email = trim($_POST['email']);
+    $password = $_POST['password'];
     $telefono = trim($_POST['telefono']);
-    $password = trim($_POST['password']);
-    $password_confirm = trim($_POST['password_confirm']);
+    $direccion = trim($_POST['direccion']); // Nuevo campo
 
-    if (empty($nombre) || empty($email) || empty($telefono) || empty($password) || empty($password_confirm)) {
-        $error = 'Todos los campos son obligatorios.';
-    } elseif ($password !== $password_confirm) {
-        $error = 'Las contraseñas no coinciden.';
+    if (empty($nombre) || empty($email) || empty($password) || empty($telefono) || empty($direccion)) {
+        $mensaje = '<div class="form-message error">Todos los campos son obligatorios.</div>';
     } else {
-        $sql = "SELECT id FROM usuarios WHERE email = ?";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = ?");
         $stmt->execute([$email]);
-
         if ($stmt->fetch()) {
-            $error = 'Este correo electrónico ya está registrado.';
+            $mensaje = '<div class="form-message error">Este correo electrónico ya está registrado.</div>';
         } else {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $sql_insert = "INSERT INTO usuarios (nombre, email, password, telefono) VALUES (?, ?, ?, ?)";
-            $stmt_insert = $pdo->prepare($sql_insert);
-
-            if ($stmt_insert->execute([$nombre, $email, $hashed_password, $telefono])) {
-                // --- CAMBIO CLAVE AQUÍ ---
-                // 1. Guardamos el mensaje de éxito en la sesión.
-                $_SESSION['flash_message'] = "¡Cuenta creada exitosamente! Ya puedes iniciar sesión.";
-                
-                // 2. Redirigimos al usuario a la página de login.
-                header("Location: login.php");
-                
-                // 3. Detenemos la ejecución del script actual.
+            // Query actualizado para incluir la dirección
+            $sql = "INSERT INTO usuarios (nombre, email, password, telefono, direccion) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            if ($stmt->execute([$nombre, $email, $hashed_password, $telefono, $direccion])) {
+                header('Location: login.php?registro=exitoso');
                 exit();
-                // --- FIN DEL CAMBIO ---
             } else {
-                $error = 'Hubo un error al crear la cuenta. Inténtalo de nuevo.';
+                $mensaje = '<div class="form-message error">Hubo un error al crear tu cuenta.</div>';
             }
         }
     }
@@ -63,11 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="index.php"><img src="img/logo.svg" alt="Logo de RollXpress" class="logo"></a>
         <h1>Crea tu Cuenta</h1>
         <p class="register-subtitle">Únete a la familia RollXpress para pedidos más rápidos.</p>
-        
-        <?php if ($error): ?>
-            <div class="register-message error"><?php echo htmlspecialchars($error); ?></div>
-        <?php endif; ?>
-
         <form action="registro.php" method="POST">
             <div class="form-group">
                 <label for="nombre" class="form-label">Nombre Completo</label>
@@ -76,6 +54,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
                 <label for="email" class="form-label">Correo Electrónico</label>
                 <input type="email" id="email" name="email" class="form-input" placeholder="tu@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input type="text" id="direccion" name="direccion" class="form-input" placeholder="Ej: Av. Siempre Viva 123" required>
             </div>
             <div class="form-group">
                 <label for="telefono" class="form-label">Número de Teléfono</label>

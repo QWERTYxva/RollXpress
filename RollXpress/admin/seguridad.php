@@ -1,14 +1,13 @@
 <?php
-// admin/seguridad.php
+// admin/seguridad.php - Versión Mejorada
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Si el usuario no ha iniciado sesión, lo redirigimos a la página de login
-if (!isset($_SESSION['user_id'])) {
-    // Usamos ../ para "subir" un nivel de la carpeta admin a la raíz
-    header("Location: ../login.php");
+// Verificamos si el usuario ha iniciado sesión Y si la variable de sesión 'is_admin' es verdadera.
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+    // Si no cumple las condiciones, lo redirigimos al login del admin.
+    header('Location: login.php');
     exit();
 }
-// En un futuro, aquí podrías verificar si el usuario tiene rol de "administrador"
-?>
