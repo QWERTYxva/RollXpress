@@ -21,17 +21,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nombre = trim($_POST['nombre']);
         $email = trim($_POST['email']);
         $telefono = trim($_POST['telefono']);
+        $direccion = trim($_POST['direccion'] ?? '');
 
         // Validar que los campos no estén vacíos
-        if (empty($nombre) || empty($email) || empty($telefono)) {
+        if (empty($nombre) || empty($email) || empty($telefono) || empty($direccion)) {
             $mensaje_datos = '<div class="form-message error">Todos los campos son obligatorios.</div>';
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $mensaje_datos = '<div class="form-message error">El formato del email no es válido.</div>';
         } else {
             // Actualizamos los datos en la base de datos
-            $sql = "UPDATE usuarios SET nombre = ?, email = ?, telefono = ? WHERE id = ?";
+            $sql = "UPDATE usuarios SET nombre = ?, email = ?, telefono = ?, direccion = ? WHERE id = ?";
             $stmt = $pdo->prepare($sql);
-            if ($stmt->execute([$nombre, $email, $telefono, $usuario_id])) {
+            if ($stmt->execute([$nombre, $email, $telefono, $direccion, $usuario_id])) {
                 // Actualizamos el nombre en la sesión por si cambió
                 $_SESSION['user_name'] = $nombre;
                 $mensaje_datos = '<div class="form-message success">¡Datos actualizados con éxito!</div>';
@@ -107,6 +108,10 @@ include 'header.php';
                             <div class="form-group">
                                 <label for="telefono">Teléfono</label>
                                 <input type="tel" name="telefono" id="telefono" value="<?php echo htmlspecialchars($usuario['telefono']); ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="direccion">Dirección de Entrega</label>
+                                <input type="text" name="direccion" id="direccion" value="<?php echo htmlspecialchars($usuario['direccion']); ?>" required>
                             </div>
                             <button type="submit" name="actualizar_datos" class="btn btn-primary">Guardar Cambios</button>
                         </form>

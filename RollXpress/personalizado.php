@@ -1,12 +1,14 @@
 <?php
+// personalizado.php - VERSIÓN FINAL
 $page_title = "Crea tu Sushi";
 require_once 'db.php';
+session_start(); // Necesitamos la sesión para el header
 
-// 1. Obtener todos los ingredientes de la base de datos
+// 1. Obtenemos todos los ingredientes de la base de datos
 $stmt = $pdo->query("SELECT * FROM ingredientes ORDER BY tipo, nombre");
-$todos_los_ingredientes = $stmt->fetchAll();
+$todos_los_ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// 2. Separar los ingredientes por tipo en arrays diferentes
+// 2. Separamos los ingredientes por tipo en arrays diferentes
 $ingredientes_por_tipo = [];
 foreach ($todos_los_ingredientes as $ingrediente) {
     $ingredientes_por_tipo[$ingrediente['tipo']][] = $ingrediente;
@@ -28,10 +30,10 @@ include 'header.php';
                     <div class="builder-options">
                         <form id="sushi-builder-form">
                             <fieldset class="builder-group">
-                                <legend>Elige tus Proteínas (hasta 2)</legend>
-                                <?php foreach ($ingredientes_por_tipo['proteina'] as $ing): ?>
+                                <legend>Elige tus Proteínas</legend>
+                                <?php foreach ($ingredientes_por_tipo['proteina'] ?? [] as $ing): ?>
                                 <div class="checkbox-card">
-                                    <input type="checkbox" name="ingrediente" id="ing-<?php echo $ing['id']; ?>" value="<?php echo $ing['id']; ?>" data-nombre="<?php echo htmlspecialchars($ing['nombre']); ?>" data-precio="<?php echo $ing['precio_adicional']; ?>">
+                                    <input type="checkbox" name="ingrediente[]" id="ing-<?php echo $ing['id']; ?>" value="<?php echo $ing['id']; ?>" data-nombre="<?php echo htmlspecialchars($ing['nombre']); ?>" data-precio="<?php echo $ing['precio_adicional']; ?>">
                                     <label for="ing-<?php echo $ing['id']; ?>">
                                         <span class="ingrediente-nombre"><?php echo htmlspecialchars($ing['nombre']); ?></span>
                                         <span class="ingrediente-precio">+ $<?php echo number_format($ing['precio_adicional'], 0); ?></span>
@@ -41,26 +43,26 @@ include 'header.php';
                             </fieldset>
                             
                             <fieldset class="builder-group">
-                                <legend>Añade Vegetales y Otros (hasta 3)</legend>
-                                 <?php foreach ($ingredientes_por_tipo['vegetal'] as $ing): ?>
+                                <legend>Añade Vegetales y Otros</legend>
+                                 <?php foreach ($ingredientes_por_tipo['vegetal'] ?? [] as $ing): ?>
                                 <div class="checkbox-card">
-                                    <input type="checkbox" name="ingrediente" id="ing-<?php echo $ing['id']; ?>" value="<?php echo $ing['id']; ?>" data-nombre="<?php echo htmlspecialchars($ing['nombre']); ?>" data-precio="<?php echo $ing['precio_adicional']; ?>">
+                                    <input type="checkbox" name="ingrediente[]" id="ing-<?php echo $ing['id']; ?>" value="<?php echo $ing['id']; ?>" data-nombre="<?php echo htmlspecialchars($ing['nombre']); ?>" data-precio="<?php echo $ing['precio_adicional']; ?>">
                                     <label for="ing-<?php echo $ing['id']; ?>">
                                         <span class="ingrediente-nombre"><?php echo htmlspecialchars($ing['nombre']); ?></span>
-                                        <span class="ingrediente-precio">+ $<?php echo $ing['precio_adicional']; ?></span>
+                                        <span class="ingrediente-precio">+ $<?php echo number_format($ing['precio_adicional'], 0); ?></span>
                                     </label>
                                 </div>
                                 <?php endforeach; ?>
                             </fieldset>
 
                             <fieldset class="builder-group">
-                                <legend>Elige tu Topping o Cobertura</legend>
-                                 <?php foreach ($ingredientes_por_tipo['topping'] as $ing): ?>
+                                <legend>Elige tu Topping o Cobertura (1 opción)</legend>
+                                 <?php foreach ($ingredientes_por_tipo['topping'] ?? [] as $ing): ?>
                                 <div class="checkbox-card">
                                     <input type="radio" name="topping" id="ing-<?php echo $ing['id']; ?>" value="<?php echo $ing['id']; ?>" data-nombre="<?php echo htmlspecialchars($ing['nombre']); ?>" data-precio="<?php echo $ing['precio_adicional']; ?>">
                                     <label for="ing-<?php echo $ing['id']; ?>">
                                         <span class="ingrediente-nombre"><?php echo htmlspecialchars($ing['nombre']); ?></span>
-                                        <span class="ingrediente-precio">+ $<?php echo $ing['precio_adicional']; ?></span>
+                                        <span class="ingrediente-precio">+ $<?php echo number_format($ing['precio_adicional'], 0); ?></span>
                                     </label>
                                 </div>
                                 <?php endforeach; ?>
@@ -81,7 +83,7 @@ include 'header.php';
                             <span>Adicionales:</span>
                             <span id="extras-price">$0</span>
                         </div>
-                        <hr>
+                        <hr style="border-color: rgba(255,255,255,0.1); margin: 1rem 0;">
                         <div class="summary-total final-total">
                             <span>Total:</span>
                             <span id="final-price">$4.990</span>

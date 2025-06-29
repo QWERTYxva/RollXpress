@@ -24,4 +24,5 @@ $pagina_actual = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="css/styles.css?v=2.6">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
+<body class="is-loading <?php if (isset($_SESSION['user_id'])) echo 'logged-in'; ?>">
     <?php include_once 'nav.php'; ?>

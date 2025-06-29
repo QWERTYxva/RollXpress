@@ -29,7 +29,7 @@ h1 { font-family: 'Anton', sans-serif; font-weight: normal; }
     color: #ecf0f1;
 }
 .admin-nav-header { padding: 1.5rem; text-align: center; border-bottom: 1px solid #4a627a; }
-.admin-nav-header img { height: 50px; filter: brightness(0) invert(1); }
+.admin-nav-header img { height: 150px; filter: brightness(0) invert(1); }
 .admin-nav-header span { display: block; color: white; font-weight: bold; margin-top: 10px; font-size: 1.2rem; }
 .admin-nav-links { list-style: none; padding: 1rem 0; margin: 0; flex-grow: 1; }
 .admin-nav-links a { display: flex; align-items: center; padding: 1rem 1.5rem; color: #ecf0f1; transition: background 0.2s; }
@@ -154,4 +154,14 @@ body.login-body {
 }
 table {
     color: #ffffff;
+}
+tr.new-order-row {
+    background-color: #d4edda !important; /* Verde claro de éxito */
+    animation: fadeOutNew 2s forwards 5s; /* La fila se vuelve normal después de 5 segundos */
+}
+
+@keyframes fadeOutNew {
+    to {
+        background-color: transparent;
+    }
 }

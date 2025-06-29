@@ -62,9 +62,9 @@
         <strong>Total:</strong>
         <span id="cart-total-price">$0</span>
     </div>
-    <button id="checkout-btn" class="btn btn-primary btn-block">
-        Finalizar Pedido
-    </button>
+    <a href="checkout.php" id="go-to-checkout-btn" class="btn btn-primary btn-block">
+        Ir a Pagar
+    </a>
 </div>
 </aside>
 

@@ -1,10 +1,10 @@
 <?php
-// login.php
+
 session_start();
 
-// Esta parte no cambia: si ya está logueado, lo mandamos a su perfil.
+
 if (isset($_SESSION['user_id'])) {
-    header("Location: perfil.php");
+    header("Location: index.php");
     exit();
 }
 
@@ -12,7 +12,6 @@ require 'db.php';
 $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // La lógica de procesar el login no cambia.
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
 
@@ -27,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['nombre'];
-            header("Location: perfil.php");
+            header("Location: index.php");
             exit();
         } else {
             $error = 'Email o contraseña incorrectos.';
@@ -52,17 +51,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p class="login-subtitle">Ingresa tus datos para acceder a tu cuenta.</p>
         
         <?php
-        // --- CAMBIO CLAVE AQUÍ ---
-        // 1. Revisamos si existe un mensaje "flash" de éxito desde el registro.
         if (isset($_SESSION['flash_message'])) {
-            // 2. Si existe, lo mostramos con una clase de éxito.
             echo '<div class="login-message success">' . htmlspecialchars($_SESSION['flash_message']) . '</div>';
-            // 3. MUY IMPORTANTE: Lo borramos para que no se muestre de nuevo.
             unset($_SESSION['flash_message']);
         }
-        // --- FIN DEL CAMBIO ---
-
-        // El mensaje de error del login sigue funcionando como antes.
+        
         if ($error): ?>
             <div class="login-message error"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
