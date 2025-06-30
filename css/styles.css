@@ -34,7 +34,7 @@ body {
     background-color: #1a1a1a;
     background-image: 
         linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
-        url('/RollXpress/img/menu-bg.webp');
+        url('/RollXpress/img/menu-bg.webp'); /* Asegúrate de que la ruta sea correcta */
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
