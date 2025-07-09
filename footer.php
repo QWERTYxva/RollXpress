@@ -27,7 +27,7 @@
                     <ul class="footer-contact-list">
                         <li class="footer-contact-item">
                             <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                            <span>Av. Portales 345, San Bernardo</span>
+                            <span>Gran Av. José Miguel Carrera 8790, La Cisterna</span>
                         </li>
                         <li class="footer-contact-item">
                             <i class="fab fa-whatsapp" aria-hidden="true"></i>

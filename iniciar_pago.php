@@ -1,69 +1,105 @@
 <?php
-// iniciar_pago.php (Versión final compatible con Transbank SDK v3.x)
+// iniciar_pago_flow.php - VERSIÓN FINAL CORREGIDA
 
-// Iniciar la sesión al principio de todo.
 session_start();
+require_once 'config.php'; // Carga tus credenciales
+require_once 'db.php';     // Carga la conexión a la BD
 
-// Cargar el autoloader de Composer, que gestiona todas las librerías.
-require_once __DIR__ . '/vendor/autoload.php';
+// --- 1. Validaciones de Seguridad Esenciales ---
 
-// Importar las clases necesarias de Transbank.
-use Transbank\Webpay\Options;
-use Transbank\Webpay\WebpayPlus\Transaction;
-
-// --- Verificación de Datos de Entrada ---
-// Asegurarse de que el monto viene por POST y es un número válido.
-if (!isset($_POST['monto']) || !is_numeric($_POST['monto']) || $_POST['monto'] <= 0) {
-    die("Error: El monto del pedido no es válido o no fue proporcionado.");
+// Si no hay un usuario logueado, no se puede pagar.
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php?error=session');
+    exit();
 }
-$monto = (float)$_POST['monto'];
 
-// Generar un ID de orden de compra único si no se proporciona.
-$orden_compra = $_POST['orden_compra'] ?? 'RX-' . time();
+// Verificamos que el monto a pagar exista en la sesión (lo guardamos en checkout.php)
+// Si no existe o es cero, algo salió mal, así que redirigimos.
+if (!isset($_SESSION['monto_total_a_pagar']) || $_SESSION['monto_total_a_pagar'] <= 0) {
+    header('Location: checkout.php?error=no_amount_in_session');
+    exit();
+}
 
-// --- Configuración de Transbank ---
-// Es una buena práctica definir las credenciales en variables.
-// Credenciales de PRUEBAS (Integración) para Webpay Plus.
-$commerceCode = '597055555532';
-$apiKey = '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1B';
+// --- 2. Obtenemos los Datos de Forma Segura ---
 
-// La URL a la que Transbank redirigirá al usuario después del pago.
-// DEBE ser una URL pública y accesible desde internet.
-$return_url = 'https://www.rollxpress.cl/confirmar_pago.php';
+$monto = $_SESSION['monto_total_a_pagar'];
+$usuario_id = $_SESSION['user_id'];
 
-// --- Creación de la Transacción ---
+// Generamos una orden de compra única y segura en el servidor.
+$orden_compra = 'rollxpress-' . $usuario_id . '-' . time();
+
+// Obtenemos el email del usuario desde la BD para la notificación de Flow.
+$stmt = $pdo->prepare("SELECT email FROM usuarios WHERE id = ?");
+$stmt->execute([$usuario_id]);
+$usuario_email = $stmt->fetchColumn();
+
+// Si por alguna razón no se encuentra el email, usamos uno de respaldo.
+if (!$usuario_email) {
+    $usuario_email = 'sin-email@rollxpress.cl';
+}
+
+
+// --- 3. Preparamos los Datos para la API de Flow ---
+
+$concepto = 'Compra de productos en RollXpress';
+// Construimos las URLs de retorno y confirmación de forma dinámica.
+$url_base = "https://tudominio.com"; // <-- IMPORTANTE: Cambia esto a la URL real de tu sitio web
+$url_confirmacion = $url_base . '/confirmar_pago.php';
+$url_retorno = $url_base . '/pedidos.php?pago=exitoso';
+
+
+$parametros = [
+    'apiKey'        => FLOW_API_KEY,
+    'commerceOrder' => $orden_compra,
+    'subject'       => $concepto,
+    'currency'      => 'CLP',
+    'amount'        => $monto,
+    'email'         => $usuario_email,
+    'urlConfirmation' => $url_confirmacion,
+    'urlReturn'     => $url_retorno,
+];
+
+// --- 4. Firmamos la Petición (Requisito de seguridad de Flow) ---
+ksort($parametros);
+$datos_a_firmar = '';
+foreach ($parametros as $key => $value) {
+    $datos_a_firmar .= $key . $value;
+}
+$firma = hash_hmac('sha256', $datos_a_firmar, FLOW_SECRET_KEY);
+$parametros['s'] = $firma;
+
+
+// --- 5. Enviamos la Solicitud a Flow y Redirigimos ---
 try {
-    // ESTA ES LA LÍNEA CORREGIDA:
-    // Para el SDK v3, se usa el método estático `forIntegration` para obtener la configuración de prueba.
-    $options = Options::forIntegration($commerceCode, $apiKey);
+    $ch = curl_init(FLOW_API_URL . '/payment/create');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parametros));
 
-    // Se crea una instancia de la transacción, pasándole la configuración correcta.
-    $tx = new Transaction($options);
+    $respuesta_raw = curl_exec($ch);
 
-    // Obtiene el ID de sesión actual.
-    $session_id = session_id();
+    if (curl_errno($ch)) {
+        throw new Exception(curl_error($ch));
+    }
+    curl_close($ch);
 
-    // Crea la transacción en Transbank.
-    $response = $tx->create($orden_compra, $session_id, $monto, $return_url);
+    $respuesta_json = json_decode($respuesta_raw, true);
 
-    // --- Redirección a Webpay ---
-    // Si la respuesta contiene una URL y un Token, la creación fue exitosa.
-    if (isset($response->url) && isset($response->token)) {
-        // Redirige al usuario al formulario de pago de Webpay.
-        header('Location: ' . $response->url . '?token_ws=' . $response->token);
-        exit; // Termina la ejecución del script para asegurar la redirección.
+    if (isset($respuesta_json['url']) && isset($respuesta_json['token'])) {
+        // Antes de redirigir, eliminamos el monto de la sesión para que no se pueda reutilizar.
+        unset($_SESSION['monto_total_a_pagar']);
+
+        $url_pago_flow = $respuesta_json['url'] . '?token=' . $respuesta_json['token'];
+        header('Location: ' . $url_pago_flow);
+        exit();
     } else {
-        // Si la respuesta no tiene la forma esperada, muestra un error detallado.
-        echo "<h3>Error al crear la transacción</h3>";
-        echo "<p>La respuesta de Transbank no fue la esperada.</p>";
-        echo "<pre>";
-        print_r($response);
-        echo "</pre>";
-        die();
+        throw new Exception($respuesta_json['message'] ?? 'Respuesta inválida de Flow.');
     }
 
-} catch (\Exception $e) {
-    // Si ocurre cualquier otro error (conexión, configuración, etc.), muestra un mensaje claro.
-    die('Error al conectar con WebPay: ' . htmlspecialchars($e->getMessage()));
+} catch (Exception $e) {
+    // Si algo falla, lo registramos (opcional) y redirigimos con un error claro.
+    error_log("Error en iniciar_pago.php: " . $e->getMessage());
+    header('Location: checkout.php?error=flow_connection&message=' . urlencode($e->getMessage()));
+    exit();
 }
 ?>

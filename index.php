@@ -78,8 +78,8 @@ include 'header.php';
                 <div class="step">
                     <div class="step-number">2</div>
                     <div class="step-content">
-                        <h3 class="step-title">Pide por WhatsApp</h3>
-                        <p class="step-text">Usa el carrito para generar tu pedido y envíalo a nuestro WhatsApp con un solo clic.</p>
+                        <h3 class="step-title">Pagar el Pedido</h3>
+                        <p class="step-text">Usa el carrito para generar tu pedido y pagarlo con un solo clic.</p>
                     </div>
                 </div>
 

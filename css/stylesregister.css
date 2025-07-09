@@ -20,7 +20,7 @@ body.register-page {
     /* Usamos el mismo fondo que en el login para consistencia */
     background-image: 
         linear-gradient(rgba(148, 32, 32, 0.801), rgba(0, 0, 0, 0.74)),
-        url('/RollXpress/img/nosotros-bg.webp');
+        url('/img/bgg.png');
     background-size: cover;
     background-position: center;
     display: flex;
